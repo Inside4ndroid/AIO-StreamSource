@@ -11,9 +11,9 @@ This Express Application will when deployed :
 
 To install locally or on any vps/dedicated server do the following :
 
-`git clone repositorylinkhere`
+`git clone https://github.com/Inside4ndroid/AIO-StreamSource.git`
 
-`cd directory`
+`cd AIO-StreamSource`
 
 `npm install`
 
@@ -23,7 +23,7 @@ or you can Deploy to Vercel :
 
 ### Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FInside4ndroid%2FAIO-StreamSource)
 
 ## # Usage
 
