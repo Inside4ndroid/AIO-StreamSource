@@ -16,7 +16,7 @@ const app = express();
 app.get('/', (req, res) => {
     res.status(200).json({
         intro: "Welcome to the unofficial vidsrc and eporner api currently the ONLY All-In-One solution aswell as additional Eporner resolver.",
-        documentation: "Please see github repo : ",
+        documentation: "Please see github repo : https://github.com/Inside4ndroid/AIO-StreamSource",
         author: "This api is developed and created by Inside4ndroid"
     });
 });
