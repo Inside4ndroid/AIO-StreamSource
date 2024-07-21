@@ -1,9 +1,9 @@
-import { categories } from "./constants.js";
+import { EPORN_CATEGORIES } from "./Constants.js";
 
-export async function getCategories() {
+export async function getEPORN_CATEGORIES() {
     try {
         const json = {
-            categories: categories
+            EPORN_CATEGORIES: EPORN_CATEGORIES
         };
         return json;
     } catch (err) {

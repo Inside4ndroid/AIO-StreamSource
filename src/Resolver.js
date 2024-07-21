@@ -1,9 +1,7 @@
-import { detailsBase } from "./constants.js";
-
 export async function getVideoSources(epornId) {
     try {
 
-        const url = detailsBase + epornId;
+        const url = process.env.EPORN_INFO + epornId;
 
         const respons = await fetch(url);
         const data = await respons.json();

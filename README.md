@@ -1,10 +1,9 @@
 # All-In-One Vidsrc & Eporner Api / Resolver
 
-This Express Application will when deployed :
+This Application will :
 
-- Run the vidsrc key extractor once when first started and then every 2 hours
-- This project does not depend on github key extractors and uses the locally created keys.
-- Resolve Vidsrc videos using a TMDB Id and also provide subtitles.
+- This project does not depend any external extractors or headless browsing.
+- Resolve FlixHQ videos using a TMDB Id and also provide subtitles this include movies and tv shows.
 - Has an Eporner api wrapper and an Eporner Embed Resolver which returns multiple qualities.
 
 ## # Installation
@@ -17,6 +16,13 @@ To install locally or on any vps/dedicated server do the following :
 
 `npm install`
 
+rename .env.example to .env and edit the values :
+
+```PORT=3000```
+```TMDB_KEY=your_tmdb_api_key```
+
+leve the other value alone or it will break the eporner wrapper.
+
 `npm run main`
 
 or you can Deploy to Vercel :
@@ -25,15 +31,38 @@ or you can Deploy to Vercel :
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FInside4ndroid%2FAIO-StreamSource)
 
+if deploying to vercel dont forget to setup your environment variables see .env.example.
+
 ## # Usage
 
 To use the api you need to know the routes here is a break down of all the routes and options etc.
 
 all routes return json.
 
-## # VIDSRC
+## # VIDEOSRC MOVIE
 
-```http://localhost:3000/vidsrc/tmdbid``` : 
+### tmdbid is required
+
+### type is required
+
+`movie` or `show`
+
+```http://localhost:3000/vidsrc/tmdbid?type=movie``` : 
+```This resolves and returns the video tmdb info including translations, source and subtitles.```
+
+## # VIDEOSRC SHOW
+
+### tmdbid is required
+
+### s is required this is the season number
+
+### e is required this is the episode number
+
+### type is required
+
+`movie` or `show`
+
+```http://localhost:3000/vidsrc/tmdbid?s=1&e2&type=show``` : 
 ```This resolves and returns the video source and subtitles.```
 
 ## # EPORNER
@@ -100,7 +129,7 @@ This will return the search results in line with your parameters :
 
 ```http://localhost:3000/eporn/?query=bbw&per_page=10&page=2&thumbsize=big&order=top-weekly&gay=1&lq=1```
 
-This will return the predefined list of categories in the constants.js file :
+This will return the predefined list of EPORN_CATEGORIES in the constants.js file :
 
 ```http://localhost:3000/eporn/cats```
 

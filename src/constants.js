@@ -1,9 +1,4 @@
-export const vidsrcBase = 'https://vidsrc.to'
-export const vidplayBase = 'https://vidplay.online';
-
-export const detailsBase = 'https://www.eporner.com/api/v2/video/id/?id='
-
-export const categories = [
+export const EPORN_CATEGORIES = [
     "4K Ultra HD",
     "60 FPS",
     "Amateur",
@@ -77,5 +72,3 @@ export const categories = [
     "VR Porn",
     "Webcam"
 ];
-
-export const port = 3000;
