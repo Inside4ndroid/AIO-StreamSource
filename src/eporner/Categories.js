@@ -1,4 +1,4 @@
-import { EPORN_CATEGORIES } from "./Constants.js";
+import { EPORN_CATEGORIES } from "../Constants.js";
 
 export async function getEPORN_CATEGORIES() {
     try {
