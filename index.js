@@ -7,6 +7,7 @@ import { getSearchResults } from './src/eporner/Search.js';
 import { getVideoDetails } from './src/eporner/MediaDetails.js';
 import { fetchSources } from './src/flixhq/flixhq.js';
 import { getmovie, getserie } from './src/vidsrc/vidsrcto.js';
+import { VidSrcExtractor, VidSrcExtractor2  } from './src/vidsrcme/vidsrcme.js';
 
 const app = fastify();
 
@@ -35,9 +36,10 @@ app.get('/vidsrc', async (request, reply) => {
     const gay = request.query.gay || '0';
     const lq = request.query.gay || '1';
     const cats = request.query.cats || null;
+    const type = request.query.type || null;
 
     if (!provider) {
-        return reply.status(400).send({ message: "The 'provider' querys are required" });
+        return reply.status(400).send({ message: "The 'provider' query is required" });
     }
 
     const fetchFlixhq = async (id, seasonNumber, episodeNumber) => {
@@ -103,20 +105,76 @@ app.get('/vidsrc', async (request, reply) => {
                 if (!response) {
                     return reply.status(404).send({ status: 404, return: "Sources not found." });
                 } else {
-                    return reply.status(200).send([res, response]);
+                    const data = {
+                        res
+                    };
+                    return reply.status(200).send([data, response]);
                 }
             } else {
                 const response = await getmovie(id);
                 if (!response) {
                     return reply.status(404).send({ status: 404, return: "Sources not found." });
                 } else {
-                    return reply.status(200).send([res, response]);
+                    const data = {
+                        res
+                    };
+                    return reply.status(200).send([data, response]);
                 }
             }
         } catch (error) {
             return reply.status(500).send({ message: 'Something went wrong. Contact developer for help.' });
         }
     };
+
+    const fetchVidsrcMe = async (id, type) => {
+
+        if (!type) {
+            return reply.status(400).send({ message: "The 'type' query is required" });
+        }
+
+        const extractor = new VidSrcExtractor();
+        const url = `https://vidsrc.net/embed/movie?tmdb=${id}`;
+        const referer = null;
+    
+        try {
+            const sources = [];
+            const subtitles = [];
+            const res = await new META.TMDB(tmdbApi).fetchMediaInfo(id, type);
+
+            const subtitleCallback = (subtitleFile) => {
+                console.log('Subtitle:', subtitleFile);
+            };
+    
+            const linkCallback = (extractorLink) => {
+                console.log('Extractor Link:', extractorLink);
+                const data1 = {
+                    res
+                };
+                sources.push({
+                    url: extractorLink.url,
+                    quality: extractorLink.quality,
+                    isM3U8: extractorLink.isM3u8
+                });
+
+                const response = {
+                    data: {
+                        headers: {
+                            Referer: extractorLink.referer
+                        },
+                        sources: sources,
+                        subtitles: subtitles
+                    }
+                };
+                return reply.status(200).send([data1, response]);
+            };
+    
+            await extractor.getUrl(url, referer, subtitleCallback, linkCallback);
+        } catch (error) {
+            console.error('Error extracting URL:', error);
+            reply.status(500).send('Internal Server Error');
+        }
+    };
+
 
     const fetchEporner = async (id, thumbsize, resolve, search, per_page, page, order, gay, lq) => {
         if (id) {
@@ -181,6 +239,8 @@ app.get('/vidsrc', async (request, reply) => {
         await fetchFlixhq(id, seasonNumber, episodeNumber);
     } else if (provider === 'vidsrc') {
         await fetchVidsrc(id, seasonNumber, episodeNumber);
+    } else if (provider === 'vidsrcme') {
+        await fetchVidsrcMe(id, type);
     } else if (provider === 'eporner') {
         if (cats) {
             await fetchEpornerCats();
